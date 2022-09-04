@@ -14,4 +14,6 @@ class State extends Model
         'views',
         'article_id',
     ];
+
+    public $timestamps = false;
 }
