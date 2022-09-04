@@ -6,7 +6,7 @@ services:
       context: ./docker
       dockerfile: nginx.docker
     volumes:
-      - .src:/app
+      - ./src:/app
     depends_on:
       - php-fpm
     ports:
