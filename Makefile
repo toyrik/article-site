@@ -1,6 +1,6 @@
 up: docker-up
 down: docker-down
-init: docker-down-clear app-clear docker-pull docker-build docker-up #app-init
+init: docker-down-clear app-clear docker-pull docker-build docker-up app-init
 
 docker-up:
 	docker-compose up -d
@@ -30,7 +30,7 @@ app-perm:
 	docker-compose run --rm php-cli chmod 775 -R storage
 
 app-keygen:
-	docker run --rm -v ${PWD}:/app --workdir=/app alpine cp .env.example .env
+	docker run --rm -v ${PWD}/src:/app --workdir=/app alpine cp .env.example .env
 	docker-compose run --rm php-cli php artisan key:generate
 
 app-composer-install:
