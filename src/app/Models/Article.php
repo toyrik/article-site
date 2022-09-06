@@ -17,6 +17,8 @@ class Article extends Model
         'slug',
     ];
 
+    public $dates = ['published_at'];
+
     public function comments()
     {
         return $this->hasMany(Comment::class);
