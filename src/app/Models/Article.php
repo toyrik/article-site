@@ -41,4 +41,9 @@ class Article extends Model
     {
         return $this->created_at->diffForHumans();
     }
+
+    public function scopeLastLimit($query, $numbers)
+    {
+        return $query->with('tags', 'state')->orderBy('created_at', 'desc')->limit($numbers)->get();
+    }
 }
