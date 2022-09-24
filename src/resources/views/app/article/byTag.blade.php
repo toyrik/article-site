@@ -1,11 +1,6 @@
 @extends('layouts.app')
-
-@section('hero')
-    @include('app.partials.hero')
-@endsection
-
 @section('content')
-    <div class="row mt-5">
+    <div class="row mt-3">
         @foreach($articles as $article)
             <div class="col-4 pb-3">
                 <div class="card">
@@ -30,5 +25,4 @@
             </div>
         @endforeach
     </div>
-    <div class="mx-auto" style="width: max-content;"> {{ $articles->links() }} </div>
 @endsection
