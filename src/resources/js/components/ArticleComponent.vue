@@ -1,16 +1,21 @@
 <template>
-    <div class="container">
-        <h1>{{ hello }}</h1>
-        <h2>My name is {{ name }}, {{ fullname }}</h2>
-        <h2>{{ helloToUper }}</h2>
-        <h3>{{ sum(6, 8) }}</h3>
-        <img :src="img" alt="">
-        <p v-if="true">True</p>
-        <ul>
-            <li v-for="(index, car) in this.cars">
-                {{ index }} - {{ cars }}
-            </li>
-        </ul>
+    <div class="row mt-5">
+        <div class="col-12 p3">
+            <img :src="article.img" alt="img" class="border rounded mx-auto d-block">
+            <h5 class="mt-5">{{ article.title }}</h5>
+            <p>
+                <span class="tag" v-for="(tag,index) in article.tags" >
+                    <span v-if="tagsLen == (index+1)">{{ tag.label }}</span>
+                    <span v-else>{{ tag.label }} | </span>
+                </span>
+            </p>
+            <p class="card-text">{{ article.body }}</p>
+            <p>Опубликованно: <i>{{article.created_at}}</i></p>
+            <div class="mt-3">
+                <span class="badge bg-danger">{{views}} <i class="far fa-eye"></i></span>
+                <span class="badge bg-primary">{{likes}} <i class="far fa-thumbs-up"></i></span>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -18,31 +23,23 @@
 import store from "../store";
 
 export default {
-    data() {
-        return {
-            hello: 'Hello world',
-            img: 'https://via.placeholder.com/600/5F1138/FFFFFF/?text=Laravel:8.*',
-            cars: ['BMW', 'Nissan', 'Volvo']
-        }
-    },
     computed: {
-        helloToUper() {
-            return this.hello.toUpperCase();
+        article() {
+            return store.state.article;
         },
-        fullname() {
-            return store.getters.getFullName;
+        tagsLen() {
+            return store.state.article.tags.length;
         },
-        name() {
-            return store.state.firstname;
-        }
-    },
-    methods: {
-        sum(a, b) {
-            return a +b;
+        views() {
+            return store.getters.articleViews;
+        },
+        likes() {
+            return store.getters.articleLikes;
         }
     },
     mounted() {
         console.log('Component mounted.')
+        console.log(store.state.article.tags)
     }
 }
 </script>

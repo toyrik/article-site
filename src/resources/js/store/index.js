@@ -5,28 +5,41 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
-        firstname: 'Jon',
-        lastname: 'Dow',
+        article: {
+            comments: [],
+            tags: [],
+            statistic: {
+                likes: 0,
+                views: 0
+            }
+        },
+        slug: ''
     },
     actions: {
-        testAction(context, payload) {
-            context.commit('SET_FIRSTNAME', response.data.name)
-            context.commit('SET_LASTNAME', response.data.lastname)
+        getArticleData(context, payload) {
+            axios.get('/api/article-json', {params: {slug:payload}}).then((response)=>{
+                context.commit('SET_ARTICLE', response.data.data);
+            }).catch(()=>{
+                console.log('Error');
+            });
         }
     },
     getters: {
-        getFullName(state) {
-            return state.firstname + ' ' + state.lastname;
+        articleViews(state) {
+            return state.article.statistic.views;
+        },
+        articleLikes(state) {
+            return state.article.statistic.likes;
         }
     },
     mutations: {
-        SET_FIRSTNAME(state, payload)
+        SET_ARTICLE(state, payload)
         {
-            state.firstname = payload;
+            state.article = payload;
         },
-        SET_LASTNAME(state, payload)
+        SET_SLUG(state, payload)
         {
-            state.lastname = payload;
+            state.slug = payload;
         },
     }
 });
