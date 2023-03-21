@@ -13,15 +13,39 @@ export default new Vuex.Store({
                 views: 0
             }
         },
-        slug: ''
+        slug: '',
+        likeIt: true
     },
     actions: {
         getArticleData(context, payload) {
-            axios.get('/api/article-json', {params: {slug:payload}}).then((response)=>{
+            axios.get('/api/article-json', {params: {slug:payload}})
+                .then((response)=>{
                 context.commit('SET_ARTICLE', response.data.data);
-            }).catch(()=>{
-                console.log('Error');
-            });
+                }).catch(()=>{
+                    console.log('Error get article data');
+                });
+        },
+        viewsIncrement(context, payload) {
+            setTimeout(() => {
+                axios.put('/api/article-views-increment', {slug:payload})
+                    .then((response) => {
+                        context.commit('SET_ARTICLE', response.data.data);
+                    })
+                    .catch(() => {
+                        console.log('Error views increment');
+                    });
+            }, 5000)
+        },
+        addLike(context, payload) {
+            axios.put('/api/article-likes-increment', {slug:payload.slug, increment:payload.increment})
+                .then((response) => {
+                    context.commit('SET_ARTICLE', response.data.data);
+                    context.commit('SET_LIKE', !context.state.likeIt);
+                })
+                .catch(() => {
+                    console.log('Error addLike')
+                });
+                console.log('after click on button', context.state.likeIt);
         }
     },
     getters: {
@@ -40,6 +64,10 @@ export default new Vuex.Store({
         SET_SLUG(state, payload)
         {
             state.slug = payload;
+        },
+        SET_LIKE(state, payload)
+        {
+            state.likeIt = payload;
         },
     }
 });

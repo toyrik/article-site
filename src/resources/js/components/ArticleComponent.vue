@@ -12,8 +12,8 @@
             <p class="card-text">{{ article.body }}</p>
             <p>Опубликованно: <i>{{article.created_at}}</i></p>
             <div class="mt-3">
-                <span class="badge bg-danger">{{views}} <i class="far fa-eye"></i></span>
-                <span class="badge bg-primary">{{likes}} <i class="far fa-thumbs-up"></i></span>
+                <views-component />
+                <likes-component />
             </div>
         </div>
     </div>
@@ -21,17 +21,20 @@
 
 <script>
 import store from "../store";
+import ViewsComponent from "./ViewsComponent";
+import LikesComponent from "./LikesComponent";
 
 export default {
+    components: {
+        ViewsComponent,
+        LikesComponent
+    },
     computed: {
         article() {
             return store.state.article;
         },
         tagsLen() {
             return store.state.article.tags.length;
-        },
-        views() {
-            return store.getters.articleViews;
         },
         likes() {
             return store.getters.articleLikes;
